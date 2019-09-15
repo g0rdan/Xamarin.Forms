@@ -59,7 +59,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AndroidDexTool>d8</AndroidDexTool>
     <AndroidLinkTool>r8</AndroidLinkTool>
-    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+    <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(CI)' == 'True' ">
     <AndroidLinkMode>Full</AndroidLinkMode>
