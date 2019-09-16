@@ -23,7 +23,6 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
-    <CI Condition="$(CI) == ''">false</CI>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DefineConstants>HAVE_OPENTK</DefineConstants>
@@ -53,17 +52,14 @@
     <DefineConstants>TRACE;HAVE_OPENTK</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidLinkMode>Full</AndroidLinkMode>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis Condition=" '$(CI)' == 'false' ">armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AndroidDexTool>d8</AndroidDexTool>
     <AndroidLinkTool>r8</AndroidLinkTool>
     <AndroidEnableMultiDex>false</AndroidEnableMultiDex>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(CI)' == 'true' ">
-    <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
