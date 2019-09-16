@@ -79,7 +79,7 @@ jobs:
         displayName: 'Copy ${{ parameters.name }}'
         inputs:
           SourceFolder: ${{ parameters.androidPath }}/bin/Release/
-          Contents: '**/*.apk'
+          Contents: '**/*AndroidControlGallery.apk'
           TargetFolder: ${{ parameters.targetFolder }}
           CleanTargetFolder: true
           OverWrite: true
