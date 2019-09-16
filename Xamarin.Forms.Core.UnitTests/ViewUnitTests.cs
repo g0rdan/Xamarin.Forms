@@ -255,12 +255,12 @@ namespace Xamarin.Forms.Core.UnitTests
 		}
 
 		[Test]
-		public void TestTranslateTo ()
+		public async Task TestTranslateTo ()
 		{
 			var view = new View {IsPlatformEnabled = true};
 			Ticker.Default = new BlockingTicker ();
 
-			view.TranslateTo (100, 50);
+			await view.TranslateTo (100, 50);
 
 			Assert.AreEqual (100, view.TranslationX);
 			Assert.AreEqual (50, view.TranslationY);
