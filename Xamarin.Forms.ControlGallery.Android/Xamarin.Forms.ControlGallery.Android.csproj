@@ -55,9 +55,10 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+    <AndroidManagedSymbols>true</AndroidManagedSymbols>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(CI)' == 'True' ">
     <AndroidLinkMode>Full</AndroidLinkMode>
