@@ -73,7 +73,7 @@ jobs:
         inputs:
           solution: ${{ parameters.androidProjectPath }}
           configuration: ${{ parameters.buildConfiguration }}
-          msbuildArguments: ${{ parameters.androidProjectArguments }} /bl
+          msbuildArguments: ${{ parameters.androidProjectArguments }}
 
       - task: CopyFiles@2
         displayName: 'Copy ${{ parameters.name }}'

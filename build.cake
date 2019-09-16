@@ -99,6 +99,19 @@ Task("provision")
 
         if(IsRunningOnWindows())
         {
+            if(!String.IsNullOrWhiteSpace(monoSDK))
+            {
+                string monoPath = $"{System.IO.Path.GetTempPath()}/mono.msi";
+                DownloadFile(monoSDK, monoPath);
+
+                StartProcess("msiexec", new ProcessSettings {
+                    Arguments = new ProcessArgumentBuilder()
+                        .Append(@"/i")
+                        .Append(monoPath)
+                        .Append("/qn")
+                    }
+                );
+            }
         }
         else
         {
