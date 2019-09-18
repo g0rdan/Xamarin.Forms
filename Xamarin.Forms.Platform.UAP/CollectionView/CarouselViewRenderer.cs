@@ -250,6 +250,12 @@ namespace Xamarin.Forms.Platform.UWP
 			
 			for (int i = 1; i <= ListViewBase.Items.Count; i++)
 			{
+				if (scrollViewerOffsetProportion >= 1 - (itemProportion / itemCount))
+				{
+					UpdatePosition(itemCount);
+					break;
+				}
+
 				if (scrollViewerOffsetProportion > (i * itemProportion) && scrollViewerOffsetProportion <= (itemProportion + i * itemProportion))
 				{
 					UpdatePosition(i);
