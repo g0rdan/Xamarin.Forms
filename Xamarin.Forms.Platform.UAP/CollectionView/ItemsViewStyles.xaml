@@ -7,6 +7,10 @@
         <VirtualizingStackPanel Orientation="Horizontal" />
     </ItemsPanelTemplate>
 
+    <ItemsPanelTemplate x:Key="VerticalListItemsPanel">
+        <VirtualizingStackPanel Orientation="Vertical" />
+    </ItemsPanelTemplate>
+    
     <ItemsPanelTemplate x:Key="HorizontalGridItemsPanel">
         <!-- Yes, this is counterintuitive. Orientation here means "direction we lay out the items until we hit the 
 		edge and then wrap around". -->

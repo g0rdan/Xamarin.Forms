@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -7,7 +8,6 @@ using UWPDataTemplate = Windows.UI.Xaml.DataTemplate;
 using WScrollBarVisibility = Windows.UI.Xaml.Controls.ScrollBarVisibility;
 using WSnapPointsType = Windows.UI.Xaml.Controls.SnapPointsType;
 using WSnapPointsAlignment = Windows.UI.Xaml.Controls.Primitives.SnapPointsAlignment;
-using System;
 
 namespace Xamarin.Forms.Platform.UWP
 {
@@ -143,13 +143,13 @@ namespace Xamarin.Forms.Platform.UWP
 
 			if (_scrollViewer != null)
 			{
-				// TODO: jsuarezruiz This breaks the ScrollTo override. Review it.
 				_scrollViewer.ViewChanging += OnScrollViewChanging;
 				_scrollViewer.ViewChanged += OnScrollViewChanged;
 			}
 
 			UpdateItemsSource();
 			UpdateItemTemplate();
+			UpdatePosition(CarouselView.Position);
 			UpdateIsSwipeEnabled();
 			UpdateIsBounceEnabled();
 		}
@@ -162,6 +162,7 @@ namespace Xamarin.Forms.Platform.UWP
 		void OnScrollViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
 		{
 			CarouselView.SetIsDragging(e.IsIntermediate);
+			UpdatePositionFromScroll();
 		}
 
 		void UpdatePeekAreaInsets()
@@ -240,6 +241,46 @@ namespace Xamarin.Forms.Platform.UWP
 			}
 		}
 
+		void UpdatePositionFromScroll()
+		{
+			// We use a virtualizing panel in CarouselView on UWP, the unit is in items.
+			double scrollViewerOffsetProportion = GetScrollViewerOffsetProportion(_scrollViewer);
+			int itemCount = ListViewBase.Items.Count;
+			double itemProportion = 1 / (double)itemCount;
+			
+			for (int i = 1; i <= ListViewBase.Items.Count; i++)
+			{
+				if (scrollViewerOffsetProportion > (i * itemProportion) && scrollViewerOffsetProportion <= (itemProportion + i * itemProportion))
+				{
+					UpdatePosition(i);
+					break;
+				}
+			}
+		}
+
+		void UpdatePosition(int position)
+		{
+			if (position <= 0)
+				return;
+
+			if (!(ListViewBase.Items[position - 1] is ItemTemplateContext itemTemplateContext))
+				throw new InvalidOperationException("Visible item not found");
+
+			CarouselView.SetCurrentItem(itemTemplateContext.Item);
+		}
+
+		double GetScrollViewerOffsetProportion(ScrollViewer scrollViewer)
+		{
+			if (scrollViewer == null)
+				return 0;
+
+			var horizontalOffsetProportion = (scrollViewer.ScrollableWidth == 0) ? 0 : (scrollViewer.HorizontalOffset / scrollViewer.ScrollableWidth);
+			var verticalOffsetProportion = (scrollViewer.ScrollableHeight == 0) ? 0 : (scrollViewer.VerticalOffset / scrollViewer.ScrollableHeight);
+			var scrollViewerOffsetProportion = Math.Max(horizontalOffsetProportion, verticalOffsetProportion);
+
+			return scrollViewerOffsetProportion;
+		}
+
 		ListViewBase CreateCarouselListLayout(ItemsLayoutOrientation layoutOrientation)
 		{
 			Windows.UI.Xaml.Controls.ListView listView;
@@ -256,7 +297,8 @@ namespace Xamarin.Forms.Platform.UWP
 			{
 				listView = new Windows.UI.Xaml.Controls.ListView()
 				{
-					Style = (Windows.UI.Xaml.Style)UWPApp.Current.Resources["VerticalCarouselListStyle"]
+					Style = (Windows.UI.Xaml.Style)UWPApp.Current.Resources["VerticalCarouselListStyle"],
+					ItemsPanel = (ItemsPanelTemplate)UWPApp.Current.Resources["VerticalListItemsPanel"]
 				};
 			}
 
